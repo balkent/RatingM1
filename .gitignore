@@ -1,3 +1,6 @@
+###> DataFixtures/json ###
+/src/DataFixtures/*.json
+###< DataFixtures/json ###
 
 ###> symfony/framework-bundle ###
 /.env.local
