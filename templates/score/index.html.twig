@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Score index{% endblock %}
+
+{% block body %}
+    <h1>Notes</h1>
+    {# <a href="{{ path('app_score_new') }}">Create new</a> #}
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                <th>Matière</th>
+                <th>Note</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for score in scores %}
+            <tr>
+                <td>{{ score.id }}</td>
+                <td>{{ score.student.lastName }}</td>
+                <td>{{ score.student.name }}</td>
+                <td>{{ score.student.email }}</td>
+                <td>{{ score.subject.libelle }}</td>
+                <td>{{ score.rating|number_format(2, '.', ',') }} / {{ score.subject.maximumRating }}</td>
+                <td>
+                    <a href="{{ path('app_score_show', {'id': score.id}) }}">show</a>
+                    <a href="{{ path('app_score_edit', {'id': score.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}

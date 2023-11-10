@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Supplement index{% endblock %}
+
+{% block body %}
+    <h1>Supplement index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Note</th>
+                <th>Catégorie</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for supplement in supplements %}
+            <tr>
+                <td>{{ supplement.id }}</td>
+                <td>{{ supplement.type.rating }}</td>
+                <td>{{ supplement.type.libelle|supplementValue }}</td>
+                <td>{{ supplement.libelle }}</td>
+                <td>
+                    <a href="{{ path('app_supplement_show', {'id': supplement.id}) }}">show</a>
+                    <a href="{{ path('app_supplement_edit', {'id': supplement.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_supplement_new') }}">Create new</a>
+{% endblock %}
