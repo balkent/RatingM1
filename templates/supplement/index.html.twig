@@ -20,7 +20,11 @@
         {% for supplement in supplements %}
             <tr>
                 <td>{{ supplement.id }}</td>
-                <td>{{ supplement.type.rating }}</td>
+                {% set rating = supplement.type.rating %}
+                {% if supplement.rating is not empty %}
+                    {% set rating = supplement.rating %}
+                {% endif %}
+                <td>{{ rating }}</td>
                 <td>{{ supplement.type.libelle|supplementValue }}</td>
                 <td>{{ supplement.libelle }}</td>
                 <td>{{ supplement.scores|length }}</td>

@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
+use App\Entity\Supplement;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use App\Dictionary\SupplementTypeDictionary;
 use App\Repository\SupplementTypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: SupplementTypeRepository::class)]
 class SupplementType
@@ -56,6 +58,11 @@ class SupplementType
         $this->rating = $rating;
 
         return $this;
+    }
+
+    public function getDisplay(): string
+    {
+        return '('.$this->rating.') '.SupplementTypeDictionary::ALL[$this->libelle];
     }
 
     /**

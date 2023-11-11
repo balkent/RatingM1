@@ -3,9 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Supplement;
-use App\Form\SupplementTypeType;
+use App\Entity\SupplementType as SupplementTypeEntity;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SupplementType extends AbstractType
@@ -14,7 +15,13 @@ class SupplementType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('type', SupplementTypeType::class)
+            ->add('rating')
+            ->add('type', EntityType::class, [
+                'class' => SupplementTypeEntity::class,
+                'choice_label' => function (SupplementTypeEntity $Supplement): string {
+                    return $Supplement->getDisplay();
+                }
+            ])
         ;
     }
 

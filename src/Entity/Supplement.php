@@ -25,6 +25,9 @@ class Supplement
     #[ORM\ManyToMany(targetEntity: Score::class, mappedBy: 'supplements')]
     private Collection $scores;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $rating = null;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
@@ -89,5 +92,17 @@ class Supplement
     public function __toString()
     {
         return $this->libelle;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): static
+    {
+        $this->rating = $rating;
+
+        return $this;
     }
 }
