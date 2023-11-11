@@ -2,4 +2,5 @@
 $primary: darken(#428bca, 20%);
 
 // the ~ allows you to reference things in node_modules
+@import "~bootstrap-icons/font/bootstrap-icons";
 @import "~bootstrap/scss/bootstrap";
