@@ -6,10 +6,11 @@ use App\Entity\Score;
 use App\Form\ScoreType;
 use App\Repository\ScoreRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/score')]
 class ScoreController extends AbstractController
@@ -53,10 +54,22 @@ class ScoreController extends AbstractController
     #[Route('/{id}/edit', name: 'app_score_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Score $score, EntityManagerInterface $entityManager): Response
     {
+        $originalSupplements = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Supplement objects in the database
+        foreach ($score->getSupplements() as $supplement) {
+            $originalSupplements->add($supplement);
+        }
+
         $form = $this->createForm(ScoreType::class, $score);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            foreach ($originalSupplements as $supplement) {              
+                if (false === $score->getSupplements()->contains($supplement)) {
+                    $supplement->getScores()->removeElement($score);
+                }
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_score_index', [], Response::HTTP_SEE_OTHER);

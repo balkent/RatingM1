@@ -1,4 +1,19 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    {{ form_row(form.rating) }}
+    {{ form_row(form.student) }}
+    {{ form_row(form.subject) }}
+
+    {# {{ form_label(form.supplements) }} #}
+    {{ form_row(form.supplements) }}
+    {# <ul 
+        class="supplements"
+        data-index="{{ form.supplements|length > 0 ? form.supplements|length + 1 : 0 }}"
+        data-prototype="{{ form_widget(form.supplements.vars.prototype)|e('html_attr') }}"
+    >
+        {% for supplement in form.supplements %}
+            <li>{{ supplement.vars.data.libelle }}</li>
+        {% endfor %}
+    </ul> #}
+    <button type="button" class="submit add_item_link" data-collection-holder-class="score_supplements">Add a supplement</button>
     <button class="submit">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}

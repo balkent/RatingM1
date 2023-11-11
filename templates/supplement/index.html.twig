@@ -12,6 +12,7 @@
                 <th>Note</th>
                 <th>Catégorie</th>
                 <th>Nom</th>
+                <th>NbScore</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -22,6 +23,7 @@
                 <td>{{ supplement.type.rating }}</td>
                 <td>{{ supplement.type.libelle|supplementValue }}</td>
                 <td>{{ supplement.libelle }}</td>
+                <td>{{ supplement.scores|length }}</td>
                 <td>
                     <a href="{{ path('app_supplement_show', {'id': supplement.id}) }}">show</a>
                     <a href="{{ path('app_supplement_edit', {'id': supplement.id}) }}">edit</a>

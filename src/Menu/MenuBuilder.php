@@ -21,6 +21,7 @@ class MenuBuilder
         $menu->addChild('Accueil', ['route' => 'app_home']);
         $menu->addChild('Notes', ['route' => 'app_score_index']);
         $menu->addChild('Eleves', ['route' => 'app_student_index']);
+        $menu->addChild('Sujet', ['route' => 'app_subject_index']);
         $menu->addChild('Suppléments', ['route' => 'app_supplement_index']);
 
         return $menu;

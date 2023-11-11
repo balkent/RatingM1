@@ -15,6 +15,7 @@
                 <th>Email</th>
                 <th>Matière</th>
                 <th>Note</th>
+                <th>NBSuppléments</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -27,6 +28,7 @@
                 <td>{{ score.student.email }}</td>
                 <td>{{ score.subject.libelle }}</td>
                 <td>{{ score.rating|number_format(2, '.', ',') }} / {{ score.subject.maximumRating }}</td>
+                <td>{{ score.supplements|length }}</td>
                 <td>
                     <a href="{{ path('app_score_show', {'id': score.id}) }}">show</a>
                     <a href="{{ path('app_score_edit', {'id': score.id}) }}">edit</a>
@@ -42,3 +44,4 @@
 
     
 {% endblock %}
+

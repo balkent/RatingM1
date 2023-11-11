@@ -11,3 +11,52 @@
 
     {{ include('score/_delete_form.html.twig') }}
 {% endblock %}
+
+{% block javascript %}
+    {{ parent() }}
+    <script type="text/javascript">
+        const addTagFormDeleteLink = (item) => {
+            const removeFormButton = document.createElement('button');
+            //removeFormButton.classList.add("submit");
+            removeFormButton.innerText = 'Delete this supplement';
+
+            item.appendChild(removeFormButton);
+
+            removeFormButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                // remove the li for the tag form
+                item.remove();
+            });
+        }
+
+        const addFormToCollection = (e) => {
+            const collectionHolder = document.querySelector('#' + e.currentTarget.dataset.collectionHolderClass);
+            const html = collectionHolder
+                .dataset
+                .prototype
+                .replace(
+                    /__name__/g,
+                    collectionHolder.dataset.index
+                );
+            const dom = new DOMParser().parseFromString(html, 'text/html');
+            const item = dom.body.querySelector('div');
+
+            collectionHolder.appendChild(item);
+            collectionHolder.dataset.index++;
+            addTagFormDeleteLink(item);
+        };
+
+        document
+            .querySelectorAll('.add_item_link')
+            .forEach(btn => {
+                btn.addEventListener("click", addFormToCollection)
+            });
+
+        document
+            .querySelectorAll('div#score_supplements div')
+            .forEach((supplement) => {
+                addTagFormDeleteLink(supplement)
+            })
+    </script>
+
+{% endblock %}
