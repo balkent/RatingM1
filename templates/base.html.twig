@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-bs-theme="dark">
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Notation M1 2023{% endblock %}</title>
@@ -21,7 +21,7 @@
             </div>
         </nav>
         <main class="container">
-        {% block body %}{% endblock %}
+            {% block body %}{% endblock %}
         </main>
         {% block javascript %}
             {{ encore_entry_script_tags('app') }}
