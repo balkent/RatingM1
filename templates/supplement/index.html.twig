@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Supplement index{% endblock %}
+{% block title %}{{ parent() }} - Suppléments{% endblock %}
 
 {% block body %}
-    <h1>Supplement index</h1>
+    <h1>Gestion des suppléments</h1>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-light">
             <tr>
                 <th>Id</th>
                 <th>Note</th>
@@ -29,8 +29,8 @@
                 <td>{{ supplement.libelle }}</td>
                 <td>{{ supplement.scores|length }}</td>
                 <td>
-                    <a href="{{ path('app_supplement_show', {'id': supplement.id}) }}">show</a>
-                    <a href="{{ path('app_supplement_edit', {'id': supplement.id}) }}">edit</a>
+                    <a class="btn btn-light" href="{{ path('app_supplement_show', {'id': supplement.id}) }}"><i class="bi bi-eye"></i></a>
+                    <a class="btn btn-light" href="{{ path('app_supplement_edit', {'id': supplement.id}) }}"><i class="bi bi-pencil-square"></i></a>
                 </td>
             </tr>
         {% else %}

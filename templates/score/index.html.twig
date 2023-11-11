@@ -1,13 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Score index{% endblock %}
+{% block title %}{{ parent() }} - Notes{% endblock %}
 
 {% block body %}
-    <h1>Notes</h1>
+    <h1>Gestion des notes</h1>
     {# <a href="{{ path('app_score_new') }}">Create new</a> #}
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-light">
             <tr>
                 <th>Id</th>
                 <th>Nom</th>
@@ -19,7 +19,7 @@
                 <th>Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
         {% for score in scores %}
             <tr>
                 <td>{{ score.id }}</td>
@@ -28,10 +28,10 @@
                 <td>{{ score.student.email }}</td>
                 <td>{{ score.subject.libelle }}</td>
                 <td>{{ score.rating|number_format(2, '.', ',') }} / {{ score.subject.maximumRating }}</td>
-                <td>{{ score.supplements|length }}</td>
+                <td class="align-middle">{{ score.supplements|length }}</td>
                 <td>
-                    <a href="{{ path('app_score_show', {'id': score.id}) }}">show</a>
-                    <a href="{{ path('app_score_edit', {'id': score.id}) }}">edit</a>
+                    <a class="btn btn-light" href="{{ path('app_score_show', {'id': score.id}) }}"><i class="bi bi-eye"></i></a>
+                    <a class="btn btn-light" href="{{ path('app_score_edit', {'id': score.id}) }}"><i class="bi bi-pencil-square"></i></a>
                 </td>
             </tr>
         {% else %}

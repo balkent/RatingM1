@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}SupplementType index{% endblock %}
+{% block title %}{{ parent() }} - Type de Suppléments{% endblock %}
 
 {% block body %}
-    <h1>SupplementType index</h1>
+    <h1>Gestion des type de supplément</h1>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-light">
             <tr>
                 <th>Id</th>
                 <th>Libelle</th>

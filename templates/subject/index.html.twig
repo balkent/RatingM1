@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Subject index{% endblock %}
+{% block title %}{{ parent() }} - Sujets{% endblock %}
 
 {% block body %}
-    <h1>Subject index</h1>
+    <h1>Gestion des matières</h1>
 
-    <table class="table">
-        <thead>
+    <table class="table table-striped">
+        <thead class="table-light">
             <tr>
                 <th>Id</th>
                 <th>Libelle</th>
@@ -21,8 +21,8 @@
                 <td>{{ subject.libelle }}</td>
                 <td>{{ subject.maximumRating }}</td>
                 <td>
-                    <a href="{{ path('app_subject_show', {'id': subject.id}) }}">show</a>
-                    <a href="{{ path('app_subject_edit', {'id': subject.id}) }}">edit</a>
+                    <a class="btn btn-light" href="{{ path('app_subject_show', {'id': subject.id}) }}"><i class="bi bi-eye"></i></a>
+                    <a class="btn btn-light" href="{{ path('app_subject_edit', {'id': subject.id}) }}"><i class="bi bi-pencil-square"></i></a>
                 </td>
             </tr>
         {% else %}
