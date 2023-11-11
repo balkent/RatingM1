@@ -14,15 +14,26 @@ class MenuBuilder
         $this->factory = $factory;
     }
 
-    public function createMainMenu(array $options): ItemInterface
+    public function createMainMenu(): ItemInterface
     {
-        $menu = $this->factory->createItem('root');
+        $links = [
+            'Accueil' => 'app_home',
+            'Notes' => 'app_score_index',
+            'Eleves' => 'app_student_index',
+            'Sujets' => 'app_subject_index',
+            'Suppléments' => 'app_supplement_index',
+        ];
 
-        $menu->addChild('Accueil', ['route' => 'app_home']);
-        $menu->addChild('Notes', ['route' => 'app_score_index']);
-        $menu->addChild('Eleves', ['route' => 'app_student_index']);
-        $menu->addChild('Sujet', ['route' => 'app_subject_index']);
-        $menu->addChild('Suppléments', ['route' => 'app_supplement_index']);
+        $menu = $this->factory->createItem('root');
+        $menu->setChildrenAttribute('class', 'navbar-nav');
+
+        foreach ($links as $label => $route) {
+            $menu->addChild($label, [
+                'route' => $route,
+                'attributes' => ['class' => 'nav-item']
+            ]);
+            $menu[$label]->setLinkAttribute('class', 'nav-link');
+        }
 
         return $menu;
     }
