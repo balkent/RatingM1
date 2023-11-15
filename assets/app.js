@@ -16,3 +16,5 @@ require('bootstrap');
 // require('bootstrap/js/dist/popover');
 
 import './styles/global.scss';
+
+import './images/schema.png';

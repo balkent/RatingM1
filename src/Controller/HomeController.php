@@ -15,4 +15,10 @@ class HomeController extends AbstractController
             'controller_name' => 'HomeController',
         ]);
     }
+
+    #[Route('/schema', name: 'app_home_schema', methods: ['GET'])]
+    public function schema(): Response
+    {
+        return $this->render('home/schema.html.twig');
+    }
 }

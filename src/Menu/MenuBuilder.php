@@ -22,6 +22,7 @@ class MenuBuilder
             'Eleves' => 'app_student_index',
             'Sujets' => 'app_subject_index',
             'Suppléments' => 'app_supplement_index',
+            'Schema' => 'app_home_schema',
         ];
 
         $menu = $this->factory->createItem('root');
