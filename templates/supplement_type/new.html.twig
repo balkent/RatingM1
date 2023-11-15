@@ -3,9 +3,9 @@
 {% block title %}New SupplementType{% endblock %}
 
 {% block body %}
-    <h1>Create new SupplementType</h1>
+    <h1>Nouveau SupplementType</h1>
 
     {{ include('supplement_type/_form.html.twig') }}
 
-    <a href="{{ path('app_supplement_type_index') }}">back to list</a>
+    <a href="{{ path('app_supplement_type_index') }}" class="btn btn-light">Retour à la liste</a>
 {% endblock %}
