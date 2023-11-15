@@ -28,9 +28,13 @@ class Supplement
     #[ORM\Column(nullable: true)]
     private ?float $rating = null;
 
+    #[ORM\ManyToMany(targetEntity: Answer::class, mappedBy: 'supplements')]
+    private Collection $answers;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +106,33 @@ class Supplement
     public function setRating(?float $rating): static
     {
         $this->rating = $rating;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): static
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->addSupplement($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): static
+    {
+        if ($this->answers->removeElement($answer)) {
+            $answer->removeSupplement($this);
+        }
 
         return $this;
     }

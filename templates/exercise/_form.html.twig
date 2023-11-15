@@ -1,0 +1,13 @@
+{{ form_start(form) }}
+
+    {{ form_row(form.subject) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.subTitle) }}
+    {{ form_row(form.maximumRating) }}
+    {{ form_label(form.picture,null,{'label_attr': { 'style': 'width:100%;'}}) }}
+    {% if picture is defined %}
+        <img class="img-fluid mb-2" src="{{ asset(exo_img_dir ~ '/' ~ picture) }}">
+    {% endif %}
+    {{ form_widget(form.picture) }}
+    <button class="btn btn-success">{{ button_label|default('Enrgistrer') }}</button>
+{{ form_end(form) }}

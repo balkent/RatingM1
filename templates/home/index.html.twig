@@ -1,18 +1,50 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <h1>Notes</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'D:/Scolaires/Cours/Geomatique-CY/notation/src/Controller/HomeController.php'|file_link(0) }}">src/Controller/HomeController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'D:/Scolaires/Cours/Geomatique-CY/notation/templates/home/index.html.twig'|file_link(0) }}">templates/home/index.html.twig</a></code></li>
-    </ul>
-</div>
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Nom</th>
+                <th>Prénom</th>
+                <th>Email</th>
+                {% for libelle, subject in data.0.subjects %}
+                    <th>{{ libelle }} ({{ subject.score.ratingMax }})</th>
+                {% endfor %}
+                <th>Note ({{ data.0.score.ratingMax }})</th>
+                <th>Note (20)</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody class="table-group-divider">
+            {% for value in data %}
+                {% set globalScore = value.score.rating + value.score.ratingUp %}
+                <tr>
+                    <td>{{ value.student.lastName|upper }}</td>
+                    <td>{{ value.student.name|capitalize }}</td>
+                    <td>{{ value.student.email }}</td>
+                    {% for subject in value.subjects %}
+                        <td>
+                            {{ subject.score.rating|number_format(2, '.', ',') }} 
+                            ({{ (0 <= subject.score.ratingUp) ? '+' : '' }}{{ subject.score.ratingUp|number_format(2, '.', ',') }})
+                        </td>
+                    {% endfor %}
+                    <td>
+                        {{ globalScore|number_format(2, '.', ',') }}
+                    </td>
+                    <td>
+                        {{ (20 * globalScore / value.score.ratingMax)|round(2, 'ceil')|number_format(2, '.', ',') }}
+                    </td>
+                    <td>
+                        <a class="btn btn-light" href="{{ path('app_home_generate_pdf', {'id': value.student.id }) }}"><i class="bi bi-filetype-pdf"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

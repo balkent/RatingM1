@@ -17,4 +17,5 @@ require('bootstrap');
 
 import './styles/global.scss';
 
+import './images/cy_ico.png';
 import './images/schema.png';

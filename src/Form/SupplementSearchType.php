@@ -2,25 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\SupplementType;
+use App\Dto\SupplementSearchDto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\SearchType;
 
-class SupplementTypeType extends AbstractType
+class SupplementSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('libelle')
-            ->add('rating')
-            ->add('icon', null, [
-                'required' => false,
-            ])
-            ->add('color', null, [
-                'required' => false,
-            ])
-            ->add('style', null, [
+            ->add('search', SearchType::class, [
+                'label' => false,
                 'required' => false,
             ])
         ;
@@ -29,7 +23,7 @@ class SupplementTypeType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SupplementType::class,
+            'data_class' => SupplementSearchDto::class,
         ]);
     }
 }

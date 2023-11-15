@@ -49,6 +49,7 @@ class StudentFixtures extends Fixture
             $student->setLastName($stud->lastName);
             $student->setName($stud->name);
             $student->setEmail($stud->email);
+            $student->setGithub($stud->github);
             $manager->persist($student);
         }
 

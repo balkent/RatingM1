@@ -3,6 +3,10 @@
 {% block title %}Supplement{% endblock %}
 
 {% block body %}
+    {% set rating = supplement.type.rating %}
+    {% if supplement.rating is not empty %}
+        {% set rating = supplement.rating %}
+    {% endif %}
     <h1>Supplement</h1>
 
     <div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -16,14 +20,27 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ supplement.id }}</td>
+                <th>Catégorie</th>
+                <td>{{ supplement.type.libelle }}</td>
             </tr>
             <tr>
                 <th>Libelle</th>
                 <td>{{ supplement.libelle }}</td>
             </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ rating }}</td>
+            </tr>
+            <tr>
+                <th>NbScore</th>
+                <td>{{ supplement.scores|length }}</td>
+            </tr>
         </tbody>
     </table>
+    <ul class="list-group">
+        {% for score in supplement.scores %}
+            <li class="list-group-item">{{ score.student.name|capitalize }} {{ score.student.lastName|upper }}</li>
+        {% endfor %}
+    </ul>
 
 {% endblock %}

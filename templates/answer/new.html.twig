@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Answer{% endblock %}
+
+{% block body %}
+    <h1>Nouveau Answer</h1>
+
+    {{ include('answer/_form.html.twig') }}
+
+    <a href="{{ path('app_answer_index') }}" class="btn btn-light">Retour à la liste</a>
+{% endblock %}

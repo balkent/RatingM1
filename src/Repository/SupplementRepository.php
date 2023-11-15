@@ -2,9 +2,12 @@
 
 namespace App\Repository;
 
+use App\Entity\Student;
+use App\Entity\Subject;
 use App\Entity\Supplement;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\SupplementType;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Supplement>
@@ -21,28 +24,52 @@ class SupplementRepository extends ServiceEntityRepository
         parent::__construct($registry, Supplement::class);
     }
 
-//    /**
-//     * @return Supplement[] Returns an array of Supplement objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return SupplementType[] Returns an array of SupplementType objects
+     */
+    public function findByStudentAndSubject(       
+        Student $student,
+        Subject $subject
+    ): array {
+        $types = $this
+            ->getEntityManager()
+            ->getRepository(SupplementType::class)
+            ->findAll();
+        $tab = [];
+        foreach ($types as $type) {
+            $supplements = $this->findByTypeAndStudentAndSubject(
+                $type,
+                $student,
+                $subject
+            );
+            if (0 < count($supplements)) {
+                $tab[$type->getLibelle()] = $supplements;
+            }
+        }
 
-//    public function findOneBySomeField($value): ?Supplement
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        return $tab;
+    }
+
+    public function findByTypeAndStudentAndSubject(
+        SupplementType $type,
+        Student $student,
+        Subject $subject
+    ): array {
+        return $this
+            ->createQueryBuilder('sup')
+            ->leftJoin('sup.type', 'supt')
+            ->leftJoin('sup.scores', 'sco')
+            ->leftJoin('sco.subject', 'sub')
+            ->andWhere('supt.libelle = :type')
+            ->andWhere('sco.student = :student')
+            ->andWhere('sub.libelle = :subject')
+            ->setParameters([
+                'type' => $type->getLibelle(),
+                'student' => $student,
+                'subject' => $subject->getLibelle(),
+            ])
+            ->getQuery()
+            ->getResult()
+        ;
+    }
 }

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-#[Route('/supplement/type')]
+#[Route('/supplement_type')]
 class SupplementTypeController extends AbstractController
 {
     #[Route('/', name: 'app_supplement_type_index', methods: ['GET'])]

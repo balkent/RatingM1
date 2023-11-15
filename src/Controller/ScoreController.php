@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Score;
 use App\Form\ScoreType;
-use App\Repository\ScoreRepository;
+use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +16,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ScoreController extends AbstractController
 {
     #[Route('/', name: 'app_score_index', methods: ['GET'])]
-    public function index(ScoreRepository $scoreRepository): Response
+    public function index(SubjectRepository $subjectRepository): Response
     {
         return $this->render('score/index.html.twig', [
-            'scores' => $scoreRepository->findAll(),
+            'subjects' => $subjectRepository->findAll(),
         ]);
     }
 
@@ -72,7 +72,7 @@ class ScoreController extends AbstractController
             }
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_score_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('score/edit.html.twig', [

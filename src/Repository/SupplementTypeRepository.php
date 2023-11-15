@@ -3,8 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\SupplementType;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<SupplementType>
@@ -20,21 +20,6 @@ class SupplementTypeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SupplementType::class);
     }
-
-//    /**
-//     * @return SupplementType[] Returns an array of SupplementType objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('s')
-//            ->andWhere('s.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('s.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
 
 //    public function findOneBySomeField($value): ?SupplementType
 //    {

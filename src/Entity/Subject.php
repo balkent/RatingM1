@@ -24,9 +24,13 @@ class Subject
     #[ORM\OneToMany(mappedBy: 'subject', targetEntity: Score::class, orphanRemoval: true)]
     private Collection $scores;
 
+    #[ORM\OneToMany(mappedBy: 'subject', targetEntity: Exercise::class)]
+    private Collection $exercise;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
+        $this->exercise = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,6 +86,36 @@ class Subject
             // set the owning side to null (unless already changed)
             if ($score->getSubject() === $this) {
                 $score->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Exercise>
+     */
+    public function getExercise(): Collection
+    {
+        return $this->exercise;
+    }
+
+    public function addExercise(Exercise $exercise): static
+    {
+        if (!$this->exercise->contains($exercise)) {
+            $this->exercise->add($exercise);
+            $exercise->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExercise(Exercise $exercise): static
+    {
+        if ($this->exercise->removeElement($exercise)) {
+            // set the owning side to null (unless already changed)
+            if ($exercise->getSubject() === $this) {
+                $exercise->setSubject(null);
             }
         }
 

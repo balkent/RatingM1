@@ -4,21 +4,29 @@ namespace App\Controller;
 
 use App\Entity\Supplement;
 use App\Form\SupplementType;
-use App\Repository\SupplementRepository;
+use App\Dto\SupplementSearchDto;
+use App\Form\SupplementSearchType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\SupplementTypeRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/supplement')]
 class SupplementController extends AbstractController
 {
-    #[Route('/', name: 'app_supplement_index', methods: ['GET'])]
-    public function index(SupplementRepository $supplementRepository): Response
+    #[Route('/', name: 'app_supplement_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, SupplementTypeRepository $supplementTypeRepository): Response
     {
+        $supplementSearchDto = new SupplementSearchDto();
+        $searchForm = $this->createForm(SupplementSearchType::class, $supplementSearchDto);
+        $searchForm->handleRequest($request);
+
         return $this->render('supplement/index.html.twig', [
-            'supplements' => $supplementRepository->findAll(),
+            'searchForm' => $searchForm,
+            'searchValue' => $supplementSearchDto->search,
+            'supplementTypes' => $supplementTypeRepository->findAll(),
         ]);
     }
 

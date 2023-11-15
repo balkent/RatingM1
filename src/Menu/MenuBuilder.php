@@ -22,6 +22,9 @@ class MenuBuilder
             'Eleves' => 'app_student_index',
             'Sujets' => 'app_subject_index',
             'Suppléments' => 'app_supplement_index',
+            'Suppléments Type' => 'app_supplement_type_index',
+            'Exo' => 'app_exercise_index',
+            'Reponses' => 'app_answer_index',
             'Schema' => 'app_home_schema',
         ];
 

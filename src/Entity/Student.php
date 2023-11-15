@@ -27,9 +27,16 @@ class Student
     #[ORM\OneToMany(mappedBy: 'student', targetEntity: Score::class, orphanRemoval: true)]
     private Collection $scores;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $github = null;
+
+    #[ORM\OneToMany(mappedBy: 'student', targetEntity: Answer::class)]
+    private Collection $answers;
+
     public function __construct()
     {
         $this->scores = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,5 +108,52 @@ class Student
         }
 
         return $this;
+    }
+
+    public function getGithub(): ?string
+    {
+        return $this->github;
+    }
+
+    public function setGithub(?string $github): static
+    {
+        $this->github = $github;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Answer>
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): static
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers->add($answer);
+            $answer->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): static
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getStudent() === $this) {
+                $answer->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDisplay(): string
+    {
+        return ucfirst($this->name).' '.strtoupper($this->lastName);
     }
 }

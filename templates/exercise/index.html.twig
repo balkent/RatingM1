@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Exercise index{% endblock %}
+
+{% block body %}
+    <h1>Exercise index</h1>
+
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Id</th>
+                <th>Sujet</th>
+                <th>Title</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for exercise in exercises %}
+            <tr>
+                <td>{{ exercise.id }}</td>
+                {% if exercise.subject is not empty %}
+                    <td>{{ exercise.subject.libelle }}</td>
+                {% else %}
+                    <td>Aucun</td>
+                {% endif %}
+                <td>{{ exercise.title }}</td>
+                <td>{{ exercise.maximumRating }}</td>
+                <td>
+                    <a class="btn btn-light" href="{{ path('app_exercise_show', {'id': exercise.id}) }}"><i class="bi bi-eye"></i></a>
+                    <a class="btn btn-light" href="{{ path('app_exercise_edit', {'id': exercise.id}) }}"><i class="bi bi-pencil-square"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_exercise_new') }}">Nouveau</a>
+{% endblock %}

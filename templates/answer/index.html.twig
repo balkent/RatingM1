@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Answer index{% endblock %}
+
+{% block body %}
+    <h1>Answer index</h1>
+
+    <div class="d-grid gap-2 mb-3 d-md-flex justify-content-md-end">
+        <a class="btn btn-success" href="{{ path('app_answer_new') }}">Nouveau</a>
+    </div>
+
+    <table class="table table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>Etudiant</th>
+                <th>Result</th>
+                <th>NBSuppléments</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for answer in answers %}
+            <tr>
+                <td>{{ answer.student.name|capitalize }} {{ answer.student.lastName|upper }}</td>
+                <td>{{ answer.result }}</td>
+                <td class="align-middle">{{ answer.supplements|length }}</td>
+                <td>
+                    <a class="btn btn-light" href="{{ path('app_answer_show', {'id': answer.id}) }}"><i class="bi bi-eye"></i></a>
+                    <a class="btn btn-light" href="{{ path('app_answer_edit', {'id': answer.id}) }}"><i class="bi bi-pencil-square"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

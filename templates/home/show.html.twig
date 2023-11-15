@@ -1,0 +1,150 @@
+{% extends 'base_without_menu.html.twig' %}
+
+{% block title %}pdf{% endblock %}
+
+{% block body %}
+    {% set globalScore = data.score.rating + data.score.ratingUp %}
+    <div class="row mb-2 mt-5">
+        <div class="col-xs-12">
+            <h2>Introduction à la programmation</h2>
+        </div>
+    </div>
+
+    <header class="row mb-2">
+        <div class="col-xs-12 p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
+            <h1 class="display-4 fst-italic">{{ data.student.name|capitalize }} {{ data.student.lastName|upper }}</h1>
+            <p class="lead my-1">
+                Note globale: 
+                <span class="badge text-bg-light">
+                    {{ (20 * globalScore / data.score.ratingMax)|round(2, 'ceil')|number_format(2, '.', ',') }} / 20
+                </span>
+            </p>
+            <p class="lead my-1">
+                Moyenne:
+                <span class="badge text-bg-light">
+                    {{ globalScore|number_format(2, '.', ',') }} / {{ data.score.ratingMax }}
+                </span>
+            </p>
+        </div>
+    </header>
+
+    {% for libelle, subject in data.subjects %}
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="mb-0">{{ libelle }}</h3>
+                        <div class="mb-1 text-body-secondary">
+                            Note: 
+                            <span class="badge text-bg-primary">
+                                {{ subject.score.rating|number_format(2, '.', ',') }} / {{ subject.score.ratingMax }}
+                            </span>
+                        </div>
+
+                        <div class="mb-1 text-body-secondary">
+                            {% if 0 < subject.score.ratingUp %}
+                                Bonus:
+                                <span class="badge text-bg-success">
+                                    +{{ subject.score.ratingUp|number_format(2, '.', ',') }}
+                                </span>
+                            {% elseif 0 == subject.score.ratingUp %}
+                                Bonus:
+                                <span class="badge text-bg-secondary">
+                                    {{ subject.score.ratingUp|number_format(2, '.', ',') }}
+                                </span>
+                            {% else %}   
+                                Malus:
+                                <span class="badge text-bg-danger">
+                                    {{ subject.score.ratingUp|number_format(2, '.', ',') }}
+                                </span>
+                            {% endif %}
+                        </div>
+
+                        {% if 0 < subject.supplements|length %}
+                            <h4>Commentaires</h4>
+                            <ul class="list-group list-group-flush">
+                                {% for supplements in subject.supplements %}
+                                    {% for supplement in supplements %}
+                                        {% set color = '' %}
+                                        {% if supplement.type.color is not empty %}
+                                            {% set color = 'text-' ~ supplement.type.color %}
+                                        {% endif %}
+                                        <li class="list-group-item {{color}}">
+                                            {% if supplement.type.icon is not empty %}
+                                                <i class="bi {{ 'bi-' ~ supplement.type.icon }}" style="{{ supplement.type.style }}"></i>
+                                            {% endif %}
+                                            {{ supplement.libelle }}
+                                        </li>
+                                    {% endfor %}
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                        {% if 0 < subject.exos|length %}
+                            <h4>Exercices</h4>
+                            {% for exo in subject.exos %}
+                                {% set answer = exo.getAnswerWithStudent(data.student) %}
+                                {% if answer is not empty %}
+                                    {% set result = exo.maximumRating - answer.sumSupplement() %}
+                                    <div{{ (loop.last) ? '': ' class="mb-4"' }}>
+                                        <h5 class="mb-2">
+                                            {{ exo.title }} {{ exo.maximumRating > 0 ? '(' ~ result ~ '/' ~ exo.maximumRating ~ 'points)'}}
+                                        </h5>
+                                        {% if exo.subTitle is not empty %}
+                                            <p class="mb-2 fst-italic fw-lighter text-body-secondary">{{ exo.subTitle|raw }}</p>                       
+                                        {% endif %}
+                                        {% if exo.picture is not empty %}
+                                            <img class="img-fluid mb-2" src="{{ asset(exo_img_dir ~ '/' ~ exo.picture) }}">
+                                        {% endif %}
+                                        <div class="form-floating">
+                                            <textarea class="form-control" id="{{ 'floatingTextarea' ~ exo.id }}" style="height: 150px">
+                                                {{ answer.result|raw }}
+                                            </textarea>
+                                            <label for="{{ 'floatingTextarea' ~ exo.id }}">Résultat</label>
+                                        </div>
+                                        {% if 0 < answer.supplements|length %}       
+                                            <ul class="list-group list-group-flush">
+                                                {% for supplement in answer.supplements %}
+                                                    {% set color = '' %}
+                                                    {% if supplement.type.color is not empty %}
+                                                        {% set color = 'text-' ~ supplement.type.color %}
+                                                    {% endif %}
+                                                    <li class="list-group-item {{color}}">
+                                                        {% if supplement.type.icon is not empty %}
+                                                            <i class="bi {{ 'bi-' ~ supplement.type.icon }}" style="{{ supplement.type.style }}"></i>
+                                                        {% endif %}
+                                                        {% if 0 != supplement.rating %}
+                                                            ({{ supplement.rating }})
+                                                        {% endif %}
+                                                        {{ supplement.libelle }}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </div> 
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+        <div class="col-md-4 d-flex align-items-center">
+            <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
+                <img src="{{ asset('build/images/cy_ico.png') }}"  style="width:30px;" alt="HTML-CSS">
+            </a>
+            <span class="mb-3 mb-md-0 text-body-secondary">© 2023 - Master 1 Géomatique</span>
+        </div>
+
+        <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+            <li class="ms-3">
+                <a class="text-body-secondary" href="{{ 'https://github.com/' ~ data.student.github }}">
+                    <i class="bi-github" style="font-size: 2rem;"></i>
+                </a>
+            </li>
+        </ul>
+    </footer>
+{% endblock %}
