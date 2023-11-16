@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-final class SupplementSearchDto
+final class SearchDto
 {
     public ?string $search = null;
 }

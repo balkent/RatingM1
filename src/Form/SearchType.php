@@ -2,18 +2,18 @@
 
 namespace App\Form;
 
-use App\Dto\SupplementSearchDto;
+use App\Dto\SearchDto;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\SearchType;
+use Symfony\Component\Form\Extension\Core\Type\SearchType as SearchTypeBase;
 
-class SupplementSearchType extends AbstractType
+class SearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('search', SearchType::class, [
+            ->add('search', SearchTypeBase::class, [
                 'label' => false,
                 'required' => false,
             ])
@@ -23,7 +23,7 @@ class SupplementSearchType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => SupplementSearchDto::class,
+            'data_class' => SearchDto::class,
         ]);
     }
 }
