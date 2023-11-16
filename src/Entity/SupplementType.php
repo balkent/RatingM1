@@ -73,7 +73,7 @@ class SupplementType
         return '('.$this->rating.') '.$this->libelle;
     }
 
-    public function withSearch($value): Collection
+    public function withSearch(?string $value): Collection
     {
         return $this->supplements->filter(function(Supplement $supplement) use ($value) {
             if (null === $value) {
