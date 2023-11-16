@@ -156,4 +156,16 @@ class Student
     {
         return ucfirst($this->name).' '.strtoupper($this->lastName);
     }
+
+    public function inSearch(?string $value): bool
+    {
+        if (null === $value) {
+            return true;
+        }
+        
+        return false !== strpos(strtolower($this->lastName), strtolower($value))
+            or false !== strpos(strtolower($this->name), strtolower($value))
+            or false !== strpos(strtolower($this->email), strtolower($value))
+        ;
+    }
 }

@@ -126,14 +126,7 @@ class Subject
     public function withSearch(?string $value): Collection
     {
         return $this->scores->filter(function(Score $score) use ($value) {
-            if (null === $value) {
-                return true;
-            }
-
-            return false !== strpos(strtolower($score->getStudent()->getName()), strtolower($value))
-                or false !== strpos(strtolower($score->getStudent()->getLastName()), strtolower($value))
-                or false !== strpos(strtolower($score->getStudent()->getEmail()), strtolower($value))
-            ;
+            return $score->getStudent()->inSearch($value);
         });
     }
 }
