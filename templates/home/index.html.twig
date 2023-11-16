@@ -46,7 +46,7 @@
                         {{ (20 * globalScore / value.score.ratingMax)|round(2, 'ceil')|number_format(2, '.', ',') }}
                     </td>
                     <td>
-                        <a class="btn btn-light" href="{{ path('app_home_generate_pdf', {'id': value.student.id }) }}"><i class="bi bi-filetype-pdf"></i></a>
+                        <a class="btn btn-light" href="{{ path('app_html_generator', {'id': value.student.id }) }}"><i class="bi bi-filetype-pdf"></i></a>
                     </td>
                 </tr>
             {% else %}

@@ -94,7 +94,7 @@
                                             <p class="mb-2 fst-italic fw-lighter text-body-secondary">{{ exo.subTitle|raw }}</p>                       
                                         {% endif %}
                                         {% if exo.picture is not empty %}
-                                            <img class="img-fluid mb-2" src="{{ asset(exo_img_dir ~ '/' ~ exo.picture) }}">
+                                            <img class="img-fluid mb-2" src="{{ exo.picture }}">
                                         {% endif %}
                                         <h6>Votre réponce:</h6>
                                         <pre><code class="language-python">{{ answer.result|raw }}</code></pre>
@@ -131,7 +131,7 @@
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
             <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-                <img src="{{ asset('build/images/cy_ico.png') }}"  style="width:30px;" alt="HTML-CSS">
+                <img src="{{ cyIcon }}"  style="width:30px;" alt="cy_ico">
             </a>
             <span class="mb-3 mb-md-0 text-body-secondary">© 2023 - Master 1 Géomatique</span>
         </div>

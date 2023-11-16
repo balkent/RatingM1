@@ -33,4 +33,13 @@ class FileUploader
     {
         return $this->targetDirectory;
     }
+
+    public function imageToBase64(string $picture): string
+    {
+        $path = $this->targetDirectory.'/'.$picture;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+
+        return 'data:image/' . $type . ';base64,' . base64_encode($data);
+    }
 }
