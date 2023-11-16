@@ -20,9 +20,21 @@
                 </div>
             </div>
         </nav>
+
         <main class="container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} d-flex align-items-center mt-3" role="alert">
+                        <i class="bi bi-check me-2" style=""></i>
+                        <div>
+                            {{ message }}
+                        </div>
+                    </div>
+                {% endfor %}
+            {% endfor %}
             {% block body %}{% endblock %}
         </main>
+
         {% block javascript %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
