@@ -93,8 +93,8 @@
                                         {% if exo.subTitle is not empty %}
                                             <p class="mb-2 fst-italic fw-lighter text-body-secondary">{{ exo.subTitle|raw }}</p>                       
                                         {% endif %}
-                                        {% if exo.picture is not empty %}
-                                            <img class="img-fluid mb-2" src="{{ exo.picture }}">
+                                        {% if exo.pictureBase64 is not empty %}
+                                            <img class="img-fluid mb-2" src="{{ exo.pictureBase64 }}">
                                         {% endif %}
                                         <h6>Votre réponce:</h6>
                                         <pre><code class="language-python">{{ answer.result|raw }}</code></pre>
