@@ -4,10 +4,10 @@ namespace App\Generator;
 
 use Twig\Environment;
 use App\Entity\Student;
-use App\Service\FileUploader;
 use App\Repository\StudentRepository;
 use App\Repository\SubjectRepository;
 use App\Repository\ExerciseRepository;
+use App\Generator\ImageBase64Generator;
 use App\Repository\SupplementRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
@@ -18,7 +18,7 @@ class HtmlGenerator
         private StudentRepository $studentRepository,
         private ExerciseRepository $exerciseRepository,
         private SupplementRepository $supplementRepository,
-        private FileUploader $fileUploader,
+        private ImageBase64Generator $imageBase64Generator,
         private ParameterBagInterface $parameterBag,
         private Environment $templating
     ) {
@@ -35,7 +35,7 @@ class HtmlGenerator
             $exos = $this->exerciseRepository->findBy(['subject' => $subject]);
             foreach ($exos as $exo) {
                 if (null !== $picture = $exo->getPicture()) {
-                    $exo->setPictureBase64($this->fileUploader->imageToBase64($picture));
+                    $exo->setPictureBase64($this->imageBase64Generator->generate('exo/'.$picture));
                 }
             }
             $data['subjects'][$subject->getLibelle()] = [
