@@ -79,7 +79,7 @@ class SupplementType
             if (null === $value) {
                 return true;
             }
-            return false !== strpos($supplement->getLibelle(), $value);
+            return false !== strpos(strtolower($supplement->getLibelle()), strtolower($value));
         });
     }
 
