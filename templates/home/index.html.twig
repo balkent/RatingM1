@@ -11,7 +11,7 @@
             <button class="btn btn-light"><i class="bi bi-search"></i></button>
         </div>
         <div class="col-auto">
-            <a class="btn btn-success" href="{{ path('app_html_generator_create') }}">Tout générer</a>
+            <a class="btn btn-success" href="{{ path('app_score_generate_all') }}">Tout générer</a>
         </div>
     {{ form_end(searchForm) }}
 
@@ -49,7 +49,7 @@
                         {{ (20 * globalScore / value.score.ratingMax)|round(2, 'ceil')|number_format(2, '.', ',') }}
                     </td>
                     <td>
-                        <a class="btn btn-light" href="{{ path('app_html_generator', {'id': value.student.id }) }}"><i class="bi bi-filetype-pdf"></i></a>
+                        <a class="btn btn-light" href="{{ path('app_score_generate_one', {'id': value.student.id }) }}"><i class="bi bi-filetype-pdf"></i></a>
                     </td>
                 </tr>
             {% else %}

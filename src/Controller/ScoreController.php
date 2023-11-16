@@ -2,17 +2,22 @@
 
 namespace App\Controller;
 
-use App\Entity\Score;
 use App\Dto\SearchDto;
+use App\Entity\Score;
+use App\Entity\Student;
 use App\Form\ScoreType;
 use App\Form\SearchType;
+use App\Generator\HtmlGenerator;
+use App\Repository\StudentRepository;
 use App\Repository\SubjectRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/score')]
 class ScoreController extends AbstractController
@@ -48,6 +53,38 @@ class ScoreController extends AbstractController
         return $this->render('score/new.html.twig', [
             'score' => $score,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/generate/all', name: 'app_score_generate_all', methods: ['GET'])]
+    public function generateAll(
+        StudentRepository $studentRepository, 
+        HtmlGenerator $htmlGenerator,
+        ParameterBagInterface $parameterBag
+    ): Response {
+        $students = $studentRepository->findAll();
+        $filesystem = new Filesystem();
+
+        foreach ($students as $student) {
+            $filesystem->dumpFile($parameterBag->get('srore_dir_absolute').'/'.$student->getName().'.html', $htmlGenerator->generate($student));
+        }
+
+        $this->addFlash(
+            'success',
+            'Tout les notes des étudiants ont été générer'
+        );
+
+        return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/generate/{id}', name: 'app_score_generate_one', methods: ['GET'])]
+    public function generate(
+        Student $student,
+        HtmlGenerator $htmlGenerator
+    ): Response {
+        return new Response($htmlGenerator->generate($student), 200, [
+            'Content-Type' => 'text/html',
+            'Content-disposition' => 'attachment; filename=page.html'
         ]);
     }
 
