@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\SubjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Score;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\SubjectRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: SubjectRepository::class)]
 class Subject
@@ -120,5 +121,19 @@ class Subject
         }
 
         return $this;
+    }
+
+    public function withSearch(?string $value): Collection
+    {
+        return $this->scores->filter(function(Score $score) use ($value) {
+            if (null === $value) {
+                return true;
+            }
+
+            return false !== strpos(strtolower($score->getStudent()->getName()), strtolower($value))
+                or false !== strpos(strtolower($score->getStudent()->getLastName()), strtolower($value))
+                or false !== strpos(strtolower($score->getStudent()->getEmail()), strtolower($value))
+            ;
+        });
     }
 }

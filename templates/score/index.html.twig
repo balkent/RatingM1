@@ -4,7 +4,18 @@
 
 {% block body %}
     <h1>Gestion des notes</h1>
-    <a class="btn btn-success" href="{{ path('app_score_new') }}">Nouveau</a>
+    {{ form_start(searchForm, {'attr': {'class': 'row g-3 justify-content-md-end'}}) }}
+        <div class="col-auto">
+            {{ form_row(searchForm.search) }}
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-light"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="col-auto">
+            <a class="btn btn-success" href="{{ path('app_score_new') }}">Nouveau</a>
+        </div>
+    {{ form_end(searchForm) }}
+
     {% for subject in subjects %}
         <h2>{{ subject.libelle }}</h2>
         <table class="table table-striped">
@@ -21,7 +32,7 @@
                 </tr>
             </thead>
             <tbody class="table-group-divider">
-            {% for score in subject.scores %}
+            {% for score in subject.withSearch(searchValue) %}
                 <tr>
                     <td>{{ score.id }}</td>
                     <td>{{ score.student.lastName }}</td>

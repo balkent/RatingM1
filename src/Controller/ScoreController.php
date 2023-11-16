@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Score;
+use App\Dto\SearchDto;
 use App\Form\ScoreType;
+use App\Form\SearchType;
 use App\Repository\SubjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,10 +17,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/score')]
 class ScoreController extends AbstractController
 {
-    #[Route('/', name: 'app_score_index', methods: ['GET'])]
-    public function index(SubjectRepository $subjectRepository): Response
+    #[Route('/', name: 'app_score_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, SubjectRepository $subjectRepository): Response
     {
+        $searchDto = new SearchDto();
+        $searchForm = $this->createForm(SearchType::class, $searchDto);
+        $searchForm->handleRequest($request);
+
         return $this->render('score/index.html.twig', [
+            'searchForm' => $searchForm,
+            'searchValue' => $searchDto->search,
             'subjects' => $subjectRepository->findAll(),
         ]);
     }
