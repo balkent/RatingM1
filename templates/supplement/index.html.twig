@@ -41,7 +41,7 @@
                     <td>{{ rating }}</td>
                     <td>{{ supplement.type.libelle }}</td>
                     <td>{{ supplement.libelle }}</td>
-                    <td>{{ supplement.scores|length }}</td>
+                    <td>{{ supplement.scores|length + supplement.answers|length }}</td>
                     <td>
                         <a class="btn btn-light" href="{{ path('app_supplement_show', {'id': supplement.id}) }}"><i class="bi bi-eye"></i></a>
                         <a class="btn btn-light" href="{{ path('app_supplement_edit', {'id': supplement.id}) }}"><i class="bi bi-pencil-square"></i></a>

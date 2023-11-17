@@ -27,12 +27,13 @@
                     <th>Email</th>
                     <th>Matière</th>
                     <th>Note</th>
-                    <th>NBSuppléments</th>
+                    <th>Commentaires</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody class="table-group-divider">
             {% for score in subject.withSearch(searchValue) %}
+                {% set supplementsAnswer = score.student.getSupplementsWithSubject(subject) %}
                 <tr>
                     <td>{{ score.id }}</td>
                     <td>{{ score.student.lastName }}</td>
@@ -40,7 +41,13 @@
                     <td>{{ score.student.email }}</td>
                     <td>{{ score.subject.libelle }}</td>
                     <td>{{ score.rating|number_format(2, '.', ',') }} / {{ score.subject.maximumRating }}</td>
-                    <td class="align-middle">{{ score.supplements|length }}</td>
+                    <td>
+                        {% if 0 < score.supplements|length or 0 < supplementsAnswer|length %}
+                            {{ score.supplements|length + supplementsAnswer|length }}
+                        {% else %}
+                            0
+                        {% endif %}
+                    </td>
                     <td>
                         <a class="btn btn-light" href="{{ path('app_score_show', {'id': score.id}) }}"><i class="bi bi-eye"></i></a>
                         <a class="btn btn-light" href="{{ path('app_score_edit', {'id': score.id}) }}"><i class="bi bi-pencil-square"></i></a>

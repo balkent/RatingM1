@@ -37,10 +37,22 @@
             </tr>
         </tbody>
     </table>
-    <ul class="list-group">
-        {% for score in supplement.scores %}
-            <li class="list-group-item">{{ score.student.name|capitalize }} {{ score.student.lastName|upper }}</li>
-        {% endfor %}
-    </ul>
+    {% if 0 < supplement.scores|length %}
+        <h3>Dans les notes ({{supplement.scores|length}}):</h3>
+        <ul class="list-group">
+            {% for score in supplement.scores %}
+                <li class="list-group-item">{{ score.student.name|capitalize }} {{ score.student.lastName|upper }}</li>
+            {% endfor %}
+        </ul>        
+    {% endif %}
+
+    {% if 0 < supplement.answers|length %}
+        <h3>Dans les Reponses ({{supplement.answers|length}}):</h3>
+        <ul class="list-group">
+            {% for answer in supplement.answers %}
+                <li class="list-group-item">{{ answer.student.name|capitalize }} {{ answer.student.lastName|upper }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 
 {% endblock %}

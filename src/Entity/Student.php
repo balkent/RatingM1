@@ -2,10 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\StudentRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\Score;
+use App\Entity\Answer;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\StudentRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity(repositoryClass: StudentRepository::class)]
 class Student
@@ -167,5 +169,17 @@ class Student
             or false !== strpos(strtolower($this->name), strtolower($value))
             or false !== strpos(strtolower($this->email), strtolower($value))
         ;
+    }
+
+    public function getSupplementsWithSubject(?Subject $subject): Collection
+    {
+        $supplements = [];
+        foreach ($this->answers as $answer) {
+            if ($subject === $answer->getExercise()->getSubject()) {
+                $supplements = array_merge($supplements, $answer->getSupplements()->toArray());
+            }
+        }
+
+        return new ArrayCollection($supplements);
     }
 }
