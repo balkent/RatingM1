@@ -3,32 +3,44 @@
 {% block title %}Answer index{% endblock %}
 
 {% block body %}
-    <h1>Answer index</h1>
+    <h1>Réponses</h1>
 
     <div class="d-grid gap-2 mb-3 d-md-flex justify-content-md-end">
         <a class="btn btn-success" href="{{ path('app_answer_new') }}">Nouveau</a>
     </div>
 
-    <table class="table table-striped">
+    <table class="table table-striped-columns">
         <thead class="table-light">
             <tr>
                 <th>Etudiant</th>
-                <th>Result</th>
-                <th>NBSuppléments</th>
+                <th>Exercise</th>
+                <th>Note</th>
+                <th>Commentaires</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
-        {% for answer in answers %}
-            <tr>
+        {% set user = answers.0.student.name ~ '_' ~ answers.0.student.lastName %}
+        {% for answer in answers|sort((a, b) => a.student.name <=> b.student.name) %}
+            {% if user != answer.student.name ~ '_' ~ answer.student.lastName %}
+                <tr class="table-group-divider">
+            {% else %}
+                <tr>
+            {% endif %}
                 <td>{{ answer.student.name|capitalize }} {{ answer.student.lastName|upper }}</td>
-                <td>{{ answer.result }}</td>
-                <td class="align-middle">{{ answer.supplements|length }}</td>
+                <td>{{ answer.exercise.title|u.truncate(50, '...') }}</td>
+                <td>
+                    {% if answer.rating is not empty %}
+                        {{ answer.rating }} / {{ answer.exercise.maximumRating }}
+                    {% endif %}
+                </td>
+                <td>{{ answer.supplements|length }}</td>
                 <td>
                     <a class="btn btn-light" href="{{ path('app_answer_show', {'id': answer.id}) }}"><i class="bi bi-eye"></i></a>
                     <a class="btn btn-light" href="{{ path('app_answer_edit', {'id': answer.id}) }}"><i class="bi bi-pencil-square"></i></a>
                 </td>
             </tr>
+            {% set user = answer.student.name ~ '_' ~ answer.student.lastName %}
         {% else %}
             <tr>
                 <td colspan="3">no records found</td>
