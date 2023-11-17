@@ -4,8 +4,11 @@
 
 {% block body %}
     <h1>Réponses</h1>
-
+    
     {{ form_start(searchForm, {'attr': {'class': 'row g-3 justify-content-md-end'}}) }}
+        <div class="col-auto">
+            <p>Il y a {{ answers|length }} réponse(s)</p>
+        </div>
         <div class="col-auto">
             {{ form_row(searchForm.search) }}
         </div>
