@@ -122,4 +122,16 @@ class Answer
 
         return $this;
     }
+
+    public function inSearch(?string $value): bool
+    {
+        if (null === $value) {
+            return true;
+        }
+
+        return false !== strpos(strtolower($this->getStudent()->getLastName()), strtolower($value))
+            or false !== strpos(strtolower($this->getStudent()->getName()), strtolower($value))
+            or false !== strpos(strtolower($this->getStudent()->getEmail()), strtolower($value))
+        ;
+    }
 }

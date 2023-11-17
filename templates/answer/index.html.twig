@@ -5,9 +5,17 @@
 {% block body %}
     <h1>Réponses</h1>
 
-    <div class="d-grid gap-2 mb-3 d-md-flex justify-content-md-end">
-        <a class="btn btn-success" href="{{ path('app_answer_new') }}">Nouveau</a>
-    </div>
+    {{ form_start(searchForm, {'attr': {'class': 'row g-3 justify-content-md-end'}}) }}
+        <div class="col-auto">
+            {{ form_row(searchForm.search) }}
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-light"><i class="bi bi-search"></i></button>
+        </div>
+        <div class="col-auto">
+            <a class="btn btn-success" href="{{ path('app_answer_new') }}">Nouveau</a>
+        </div>
+    {{ form_end(searchForm) }}
 
     <table class="table table-striped-columns">
         <thead class="table-light">
@@ -31,7 +39,10 @@
                 <td>{{ answer.exercise.title|u.truncate(50, '...') }}</td>
                 <td>
                     {% if answer.rating is not empty %}
-                        {{ answer.rating }} / {{ answer.exercise.maximumRating }}
+                        {{ answer.rating }}
+                        {% if answer.exercise.maximumRating is not empty %}
+                         / {{ answer.exercise.maximumRating }}
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td>{{ answer.supplements|length }}</td>
