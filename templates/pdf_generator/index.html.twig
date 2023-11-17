@@ -97,8 +97,8 @@
                                         {% endif %}
                                         <h6>Votre réponce:</h6>
                                         <pre><code class="language-python">{{ answer.result|raw }}</code></pre>
+                                        <h6>Commentaires:</h6>
                                         {% if 0 < answer.supplements|length %}
-                                            <h6>Commentaires:</h6>     
                                             <ul class="list-group list-group-flush">
                                                 {% for supplement in answer.supplements %}
                                                     {% set color = '' %}
@@ -113,6 +113,8 @@
                                                     </li>
                                                 {% endfor %}
                                             </ul>
+                                        {% else %}
+                                            <p>Aucun commentaire</p>
                                         {% endif %}
                                     </div> 
                                 {% endif %}
