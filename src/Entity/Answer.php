@@ -28,6 +28,9 @@ class Answer
     #[ORM\ManyToMany(targetEntity: Supplement::class, inversedBy: 'answers')]
     private Collection $supplements;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $rating = null;
+
     public function __construct()
     {
         $this->supplements = new ArrayCollection();
@@ -106,5 +109,29 @@ class Answer
         }
 
         return $result;
+    }
+
+    public function getRating(): ?float
+    {
+        return $this->rating;
+    }
+
+    public function setRating(?float $rating): static
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+    public function inSearch(?string $value): bool
+    {
+        if (null === $value) {
+            return true;
+        }
+
+        return false !== strpos(strtolower($this->getStudent()->getLastName()), strtolower($value))
+            or false !== strpos(strtolower($this->getStudent()->getName()), strtolower($value))
+            or false !== strpos(strtolower($this->getStudent()->getEmail()), strtolower($value))
+        ;
     }
 }

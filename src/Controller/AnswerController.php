@@ -2,23 +2,39 @@
 
 namespace App\Controller;
 
+use App\Dto\SearchDto;
 use App\Entity\Answer;
 use App\Form\AnswerType;
+use App\Form\SearchType;
 use App\Repository\AnswerRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/answer')]
 class AnswerController extends AbstractController
 {
-    #[Route('/', name: 'app_answer_index', methods: ['GET'])]
-    public function index(AnswerRepository $answerRepository): Response
+    #[Route('/', name: 'app_answer_index', methods: ['GET', 'POST'])]
+    public function index(Request $request, AnswerRepository $answerRepository): Response
     {
+        $answers = $answerRepository->findAll();
+
+        $searchDto = new SearchDto();
+        $searchForm = $this->createForm(SearchType::class, $searchDto);
+        $searchForm->handleRequest($request);
+
+        $data = [];
+        foreach ($answers as $answer) {
+            if (true === $answer->inSearch($searchDto->search)) {
+                $data[] = $answer;
+            }
+        }
+
         return $this->render('answer/index.html.twig', [
-            'answers' => $answerRepository->findAll(),
+            'searchForm' => $searchForm,
+            'answers' => $data,
         ]);
     }
 
