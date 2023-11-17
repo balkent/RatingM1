@@ -96,13 +96,10 @@
                                         {% if exo.picture is not empty %}
                                             <img class="img-fluid mb-2" src="{{ asset(exo_img_dir ~ '/' ~ exo.picture) }}">
                                         {% endif %}
-                                        <div class="form-floating">
-                                            <textarea class="form-control" id="{{ 'floatingTextarea' ~ exo.id }}" style="height: 150px">
-                                                {{ answer.result|raw }}
-                                            </textarea>
-                                            <label for="{{ 'floatingTextarea' ~ exo.id }}">Résultat</label>
-                                        </div>
-                                        {% if 0 < answer.supplements|length %}       
+                                        <h6>Votre réponce:</h6>
+                                        <pre><code class="language-python">{{ answer.result|raw }}</code></pre>
+                                        {% if 0 < answer.supplements|length %}
+                                            <h6>Commentaires:</h6>     
                                             <ul class="list-group list-group-flush">
                                                 {% for supplement in answer.supplements %}
                                                     {% set color = '' %}
