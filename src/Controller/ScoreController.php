@@ -66,7 +66,7 @@ class ScoreController extends AbstractController
         $filesystem = new Filesystem();
 
         foreach ($students as $student) {
-            $filesystem->dumpFile($parameterBag->get('srore_dir_absolute').'/'.$student->getName().'.html', $htmlGenerator->generate($student));
+            $filesystem->dumpFile($parameterBag->get('srore_dir_absolute').'/'.$this->getNameFile($student), $htmlGenerator->generate($student));
         }
 
         $this->addFlash(
@@ -84,8 +84,13 @@ class ScoreController extends AbstractController
     ): Response {
         return new Response($htmlGenerator->generate($student), 200, [
             'Content-Type' => 'text/html',
-            'Content-disposition' => 'attachment; filename=page.html'
+            'Content-disposition' => 'attachment; filename='.$this->getNameFile($student),
         ]);
+    }
+
+    private function getNameFile(Student $student) :string
+    {
+        return str_replace(' ', '_', strtolower($student->getLastName()).' '.strtolower($student->getName()).'.html');
     }
 
     #[Route('/{id}', name: 'app_score_show', methods: ['GET'])]
