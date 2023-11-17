@@ -8,15 +8,39 @@
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ score.id }}</td>
+                <th>Nom</th>
+                <td>{{ score.student.lastName }}</td>
             </tr>
             <tr>
-                <th>Rating</th>
-                <td>{{ score.rating }}</td>
+                <th>Prénom</th>
+                <td>{{ score.student.name }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ score.student.email }}</td>
+            </tr>
+            <tr>
+                <th>Matière</th>
+                <td>{{ score.subject.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ score.rating|number_format(2, '.', ',') }} / {{ score.subject.maximumRating }}</td>
             </tr>
         </tbody>
     </table>
+
+    <h3>Commentaires:</h3>
+    <ul class="list-group">
+        {% for supplement in score.supplements %}
+            <li class="list-group-item">{{ supplement.libelle }}</li>
+        {% endfor %}
+        {% for answer in score.student.answers %}
+            {% for supplement in answer.supplements %}
+                <li class="list-group-item">{{ supplement.libelle }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
 
     <a href="{{ path('app_score_index') }}" class="btn btn-light">Retour à la liste</a>
 

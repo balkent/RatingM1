@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Score;
+use App\Entity\Exercise;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\SubjectRepository;
 use Doctrine\Common\Collections\Collection;

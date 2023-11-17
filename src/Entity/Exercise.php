@@ -137,10 +137,15 @@ class Exercise
 
     public function getAnswerWithStudent(Student $student): ?Answer
     {
-        $answer = $this->answers->filter(function(Answer $answer) use ($student) {
-            return $student === $answer->getStudent();
-        });
+        $answer = $this->getAnswersWithStudent($student);
 
         return (false === $answer->first())? null: $answer->first();
+    }
+
+    public function getAnswersWithStudent(Student $student): Collection
+    {
+        return $this->answers->filter(function(Answer $answer) use ($student) {
+            return $student === $answer->getStudent();
+        });
     }
 }
