@@ -85,10 +85,9 @@
                             {% for exo in subject.exos %}
                                 {% set answer = exo.getAnswerWithStudent(data.student) %}
                                 {% if answer is not empty %}
-                                    {% set result = exo.maximumRating - answer.sumSupplement() %}
                                     <div{{ (loop.last) ? '': ' class="mb-4"' }}>
                                         <h5 class="mb-2">
-                                            {{ exo.title }} {{ exo.maximumRating > 0 ? '(' ~ result ~ '/' ~ exo.maximumRating ~ 'points)'}}
+                                            {{ exo.title }} {{ exo.maximumRating > 0 ? '(' ~ answer.rating ~ '/' ~ exo.maximumRating ~ 'points)'}}
                                         </h5>
                                         {% if exo.subTitle is not empty %}
                                             <p class="mb-2 fst-italic fw-lighter text-body-secondary">{{ exo.subTitle|raw }}</p>                       
@@ -109,9 +108,6 @@
                                                     <li class="list-group-item {{color}}">
                                                         {% if supplement.type.icon is not empty %}
                                                             <i class="bi {{ 'bi-' ~ supplement.type.icon }}" style="{{ supplement.type.style }}"></i>
-                                                        {% endif %}
-                                                        {% if 0 != supplement.rating %}
-                                                            ({{ supplement.rating }})
                                                         {% endif %}
                                                         {{ supplement.libelle }}
                                                     </li>
