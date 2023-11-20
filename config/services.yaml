@@ -4,8 +4,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    exo_img_dir: '/uploads/images/exo'
-    exo_img_directory: '%kernel.project_dir%/public%exo_img_dir%'
+    srore_dir: 'public/scores'
+    srore_dir_absolute: '%kernel.project_dir%/%srore_dir%'
+    img_dir: 'uploads/images'
+    img_dir_absolute: '%kernel.project_dir%/%img_dir%'
+    exo_img_dir: '%img_dir%/exo'
+    exo_img_directory: '%kernel.project_dir%/public/%exo_img_dir%'
 
 services:
     # default configuration for services in *this* file
@@ -31,5 +35,9 @@ services:
     App\Service\FileUploader:
         arguments:
             $targetDirectory: '%exo_img_directory%'
+
+    App\Generator\ImageBase64Generator:
+        arguments:
+            $imageDirectory: '%img_dir%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

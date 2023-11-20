@@ -60,6 +60,8 @@
                             {% endif %}
                         </div>
 
+                        <hr>
+
                         {% if 0 < subject.supplements|length %}
                             <h4>Commentaires</h4>
                             <ul class="list-group list-group-flush">
@@ -85,21 +87,20 @@
                             {% for exo in subject.exos %}
                                 {% set answer = exo.getAnswerWithStudent(data.student) %}
                                 {% if answer is not empty %}
-                                    {% set result = exo.maximumRating - answer.sumSupplement() %}
                                     <div{{ (loop.last) ? '': ' class="mb-4"' }}>
                                         <h5 class="mb-2">
-                                            {{ exo.title }} {{ exo.maximumRating > 0 ? '(' ~ result ~ '/' ~ exo.maximumRating ~ 'points)'}}
+                                            {{ exo.title }} {{ exo.maximumRating > 0 ? '(' ~ answer.rating ~ '/' ~ exo.maximumRating ~ 'points)'}}
                                         </h5>
                                         {% if exo.subTitle is not empty %}
                                             <p class="mb-2 fst-italic fw-lighter text-body-secondary">{{ exo.subTitle|raw }}</p>                       
                                         {% endif %}
-                                        {% if exo.picture is not empty %}
-                                            <img class="img-fluid mb-2" src="{{ asset(exo_img_dir ~ '/' ~ exo.picture) }}">
+                                        {% if exo.pictureBase64 is not empty %}
+                                            <img class="img-fluid mb-2" src="{{ exo.pictureBase64 }}">
                                         {% endif %}
                                         <h6>Votre réponce:</h6>
                                         <pre><code class="language-python">{{ answer.result|raw }}</code></pre>
+                                        <h6>Commentaires:</h6>
                                         {% if 0 < answer.supplements|length %}
-                                            <h6>Commentaires:</h6>     
                                             <ul class="list-group list-group-flush">
                                                 {% for supplement in answer.supplements %}
                                                     {% set color = '' %}
@@ -110,13 +111,12 @@
                                                         {% if supplement.type.icon is not empty %}
                                                             <i class="bi {{ 'bi-' ~ supplement.type.icon }}" style="{{ supplement.type.style }}"></i>
                                                         {% endif %}
-                                                        {% if 0 != supplement.rating %}
-                                                            ({{ supplement.rating }})
-                                                        {% endif %}
                                                         {{ supplement.libelle }}
                                                     </li>
                                                 {% endfor %}
                                             </ul>
+                                        {% else %}
+                                            <p>Aucun commentaire</p>
                                         {% endif %}
                                     </div> 
                                 {% endif %}
@@ -131,7 +131,7 @@
     <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
         <div class="col-md-4 d-flex align-items-center">
             <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
-                <img src="{{ asset('build/images/cy_ico.png') }}"  style="width:30px;" alt="HTML-CSS">
+                <img src="{{ cyIcon }}"  style="width:30px;" alt="cy_ico">
             </a>
             <span class="mb-3 mb-md-0 text-body-secondary">© 2023 - Master 1 Géomatique</span>
         </div>

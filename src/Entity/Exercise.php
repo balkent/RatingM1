@@ -26,6 +26,8 @@ class Exercise
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $picture = null;
 
+    private ?string $pictureBase64 = null;
+
     #[ORM\Column(nullable: true)]
     private ?float $maximumRating = null;
 
@@ -119,6 +121,18 @@ class Exercise
                 $answer->setExercise(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPictureBase64(): ?string
+    {
+        return $this->pictureBase64;
+    }
+
+    public function setPictureBase64(string $pictureBase64): static
+    {
+        $this->pictureBase64 = $pictureBase64;
 
         return $this;
     }

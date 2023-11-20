@@ -3,12 +3,9 @@
 namespace App\Controller;
 
 use App\Dto\SearchDto;
-use App\Entity\Student;
 use App\Form\SearchType;
 use App\Repository\StudentRepository;
 use App\Repository\SubjectRepository;
-use App\Repository\ExerciseRepository;
-use App\Repository\SupplementRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,43 +46,9 @@ class HomeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/pdf', name: 'app_home_generate_pdf', methods: ['GET'])]
-    public function generatePdf(
-        Student $student, 
-        StudentRepository $studentRepository, 
-        SupplementRepository $supplementRepository,
-        SubjectRepository $subjectRepository,
-        ExerciseRepository $exerciseRepository
-    ): Response {
-        $data = [];        
-        $subjects = $subjectRepository->findAll();
-
-        $data['student'] = $student;
-        $data['score'] = $studentRepository->globalScore($student);
-        foreach ($subjects as $subject) {
-            $data['subjects'][$subject->getLibelle()] = [
-                'score' => $studentRepository->scoreByStudentAndSubject($student, $subject),
-                'supplements' => $supplementRepository->findByStudentAndSubject($student, $subject),
-                'exos' => $exerciseRepository->findBy(['subject' => $subject]),
-            ];
-        }
-
-        return $this->render('home/show.html.twig', [
-            'data' => $data,
-        ]);
-    }
-
     #[Route('/schema', name: 'app_home_schema', methods: ['GET'])]
     public function schema(): Response
     {
         return $this->render('home/schema.html.twig');
     }
-
-    // #[Route('/{id}/pdf', name: 'app_student_generate_pdf', methods: ['GET'])]
-    // public function generatePdf(Student $student): Response
-    // {
-    //     return $this->render('student/show.html.twig', [
-    //         'student' => $student,
-    //     ]);
-    // }
 }
