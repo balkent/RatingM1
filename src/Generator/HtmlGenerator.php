@@ -24,7 +24,7 @@ class HtmlGenerator
     ) {
     }
 
-    public function generate(Student $student): string
+    public function generate(Student $student, string $color = 'light'): string
     {
         $data = [];        
         $subjects = $this->subjectRepository->findAll();
@@ -50,6 +50,7 @@ class HtmlGenerator
         $cyIcon = 'data:image/' . $type . ';base64,' . base64_encode(file_get_contents($path));
 
         return $this->templating->render('pdf_generator/index.html.twig', [
+            'color' => $color,
             'data' => $data,
             'cyIcon' => $cyIcon,
         ]);

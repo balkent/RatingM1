@@ -77,20 +77,21 @@ class ScoreController extends AbstractController
         return $this->redirectToRoute('app_home', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/generate/{id}', name: 'app_score_generate_one', methods: ['GET'])]
+    #[Route('/generate/{color}/{id}', name: 'app_score_generate_one', methods: ['GET'])]
     public function generate(
+        string $color,
         Student $student,
         HtmlGenerator $htmlGenerator
     ): Response {
-        return new Response($htmlGenerator->generate($student), 200, [
+        return new Response($htmlGenerator->generate($student, $color), 200, [
             'Content-Type' => 'text/html',
-            'Content-disposition' => 'attachment; filename='.$this->getNameFile($student),
+            'Content-disposition' => 'attachment; filename='.$this->getNameFile($student, $color),
         ]);
     }
 
-    private function getNameFile(Student $student) :string
+    private function getNameFile(Student $student, string $color) :string
     {
-        return str_replace(' ', '_', strtolower($student->getLastName()).' '.strtolower($student->getName()).'.html');
+        return str_replace(' ', '_', strtolower($student->getLastName()).' '.strtolower($student->getName()).' '.$color.'.html');
     }
 
     #[Route('/{id}', name: 'app_score_show', methods: ['GET'])]
